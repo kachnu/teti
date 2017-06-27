@@ -5,21 +5,29 @@ from bs4 import BeautifulSoup
 import time
 
 
-session = dryscrape.Session()
-session.visit("http://10.99.95.201/login.cgi?webpwd=Admin&Submit=Submit")
-time.sleep(0.5)
-response = session.body()
-soup = BeautifulSoup(response, 'lxml')
+def read_DIs(ip):
+    session = dryscrape.Session()
+    url = 'http://' + ip + '/login.cgi?webpwd=Admin&Submit=Submit' 
+    print('Retrieving ' + url)
+    session.visit(url)
+    #session.set_timeout(0.5)
+    time.sleep(0.5)
+    response = session.body()
+    soup = BeautifulSoup(response, 'lxml')
+    DIs = soup.findAll(id = re.compile('DI\d+'))
+    i=0
+    for DI in DIs:
+        if DI.text != '-':
+            print('DI' + str(i) + ' ' + DI.text)
+            i = i + 1
+    return
 
-DIs = soup.findAll(id = re.compile('DI\d+'))
-#DIs = soup.findAll(id = 'DI0')
+with open('teti.csv') as f:
+    for line in f:
+        if not line.startswith('#'):
+            words = line.split(';')
+            ip = str(words[5])
+            read_DIs(ip)
+f.close()
 
-i=0
-for DI in DIs:
-    if DI.text != '-':
-        print('DI' + str(i) + ' ' + DI.text)
-        i = i + 1
 
-#comment Vovan
-#comment Vovan
-#comment Vovan
