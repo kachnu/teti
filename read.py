@@ -19,3 +19,5 @@ for DI in DIs:
     if DI.text != '-':
         print('DI' + str(i) + ' ' + DI.text)
         i = i + 1
+
+#comment Vovan
