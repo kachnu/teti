@@ -9,13 +9,14 @@ def read_DIs(ip, name, normal_state):
     session = dryscrape.Session()
     url = 'http://' + ip + '/login.cgi?webpwd=Admin&Submit=Submit' 
     print("")
-    print(name)
+
+    print(name + ' - ' + time.ctime())
     session.visit(url)
     time.sleep(0.1)
     response = session.body()
     soup = BeautifulSoup(response, 'lxml')
     DIs = soup.findAll(id = re.compile('DI\d+'))
-    sensors = ["220V","SMOKE","DOOR","MUX LOS","",""]
+    sensors = ["220V","SMOK","DOOR","MUXL","",""]
     i=0
     for DI in DIs:
         if DI.text != '-':
@@ -23,7 +24,12 @@ def read_DIs(ip, name, normal_state):
                 DIT = 1
             else:
                 DIT = 0
-            print('DI' + str(i) + ' ' + sensors[i] + ' ' +str(DIT) + ' ' + normal_state[i])
+            if str(DIT) != normal_state[i]:
+                STATE = "ALARM"
+            else:
+                STATE = "OK"
+            if i < 4:
+                print('DI' + str(i) + ' ' + sensors[i] + ' ' + str(DIT) + ' ' + normal_state[i] + ' ' + STATE)
             i = i + 1
     return
 
