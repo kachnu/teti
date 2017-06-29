@@ -1,17 +1,18 @@
 #!/usr/bin/python3
 import os.path
 import time
-from TET import TET6
+import threading
+from TET import TETP6
 
 config_file = 'config.py'
 if os.path.isfile(config_file):
-    print('OK config')
+    print('Config file - OK')
     from config import *
 else:
     print('Bad config')
     sensors = []
     sleeptime = 0.1
-
+    cycletime = 10
 
 TETs = []
 with open('teti.csv') as f:
@@ -19,21 +20,30 @@ with open('teti.csv') as f:
         if not line.startswith('#'):
             words = line.split(';')
             name = str(words[0])
-            ip = str(words[5])
             info = str(words[1])
+            type_tet = str(words[2])
+            ip = str(words[5])
             normal_state = (words[6])
-            tet = TET6(ip, name, info, normal_state)
-            #tet.readDIs(sleeptime)
-            TETs.append(tet)
+            if type_tet.lower() == 'tet-p6' and type_tet !='':
+                tet = TETP6(ip, name, info, normal_state)
+                TETs.append(tet)
 f.close()
+
+def opros_tet(tet):
+    if tet.readDIs(sleeptime):
+        tet.printTET(sensors)
+        tet.check(len(sensors))
 
 try:
     while True:
         for tet in TETs:
-            tet.readDIs(sleeptime)
-            tet.printTET(sensors)
-            tet.check(len(sensors))
-        time.sleep(5)   
+            t = threading.Thread(name=tet.name, target=opros_tet, args=(tet,))
+            t.setDaemon(True)
+            t.start()
+            t.join
+        time.sleep(cycletime)
+        print('end cycle' + '  '+ str(threading.active_count()))
+
 except KeyboardInterrupt:
     pass
 
