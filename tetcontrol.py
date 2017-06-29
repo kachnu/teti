@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import os.path
+import time
 from TET import TET6
 
 config_file = 'config.py'
@@ -22,16 +23,17 @@ with open('teti.csv') as f:
             info = str(words[1])
             normal_state = (words[6])
             tet = TET6(ip, name, info, normal_state)
-            tet.readDIs(sleeptime)
+            #tet.readDIs(sleeptime)
             TETs.append(tet)
 f.close()
 
 try:
     while True:
         for tet in TETs:
+            tet.readDIs(sleeptime)
             tet.printTET(sensors)
             tet.check(len(sensors))
-            tet.readDIs(sleeptime)
+        time.sleep(5)   
 except KeyboardInterrupt:
     pass
 

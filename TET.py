@@ -18,22 +18,25 @@ class TET6:
     def readDIs(self, sleeptime):
         session = dryscrape.Session()
         url = 'http://' + self.IP + '/login.cgi?webpwd=Admin&Submit=Submit' 
-        session.visit(url)
-        time.sleep(sleeptime)
-        response = session.body()
-        soup = BeautifulSoup(response, 'lxml')
-        cDIs = soup.findAll(id = re.compile('DI\d+'))
-        #i = 0
-        for DI in cDIs:
-            #if i > 3:
-                #break
-            if DI.text == 'ON':
-                self.currentDIs.append(1)
-            else:
-                self.currentDIs.append(0)
-            #i = i + 1
-        self.timestamp = time.ctime()
-        
+        try:
+            session.visit(url)
+            time.sleep(sleeptime)
+            response = session.body()
+            soup = BeautifulSoup(response, 'lxml')
+            cDIs = soup.findAll(id = re.compile('DI\d+'))
+            #i = 0
+            for DI in cDIs:
+                #if i > 3:
+                    #break
+                if DI.text == 'ON':
+                    self.currentDIs.append(1)
+                else:
+                    self.currentDIs.append(0)
+                #i = i + 1
+            self.timestamp = time.ctime()
+        except:
+            print("no response")
+
     def check(self, num):
         n = 0
         if num == 0:
