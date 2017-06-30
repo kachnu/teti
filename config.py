@@ -4,3 +4,5 @@ sensors = ["220V","SMOK","MUXL","DOOR"]
 sleeptime = 0.1
 # survey cycle
 cycletime = 5
+#session sleep time
+session_time = 5

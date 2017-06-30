@@ -30,7 +30,7 @@ with open('teti.csv') as f:
 f.close()
 
 def opros_tet(tet):
-    if tet.readDIs(sleeptime):
+    if tet.readDIs(sleeptime, session_time):
         tet.printTET(sensors)
         tet.check(len(sensors))
 
@@ -40,7 +40,7 @@ try:
             t = threading.Thread(name=tet.name, target=opros_tet, args=(tet,))
             t.setDaemon(True)
             t.start()
-            t.join
+            t.join()
         time.sleep(cycletime)
         print('end cycle' + '  '+ str(threading.active_count()))
 

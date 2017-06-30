@@ -15,8 +15,9 @@ class TETP6:
         self.currentDIs = []
         self.timestamp = 0
 
-    def readDIs(self, sleeptime):
+    def readDIs(self, sleeptime, session_time):
         session = dryscrape.Session()
+        session.set_timeout(session_time)
         url = 'http://' + self.ip + '/login.cgi?webpwd=Admin&Submit=Submit'
         try:
             print("Try connect" + ' - '+ self.name)
