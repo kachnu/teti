@@ -1,15 +1,33 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import os.path
 import time
 import threading
 from TET import TETP6
+import logging
+
+# создаём объект с именем модуля
+logger = logging.getLogger(__name__)
+# создаём обрабочтик файла лога
+handler = logging.FileHandler('logger1.log')
+# задаём уровень логгирования
+handler.setLevel(logging.INFO)
+# форматируем записи
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# устанавливаем формат для обработчика
+handler.setFormatter(formatter)
+# добавляем обработчик к логгеру
+logger.addHandler(handler)
+
 
 config_file = 'config.py'
 if os.path.isfile(config_file):
-    print('Config file - OK')
+    #print('Config file - OK')
+    logger.info('Config file was readed successfully')
     from config import *
 else:
-    print('Bad config')
+    #print('Bad config')
+    logger.warning('Config file doesn"t exist. Default settings are used')
     sensors = []
     sleeptime = 0.1
     cycletime = 10
@@ -29,20 +47,20 @@ with open('teti.csv') as f:
                 TETs.append(tet)
 f.close()
 
-def opros_tet(tet):
-    if tet.readDIs(sleeptime, session_time):
-        tet.printTET(sensors)
-        tet.check(len(sensors))
-
 try:
     while True:
         for tet in TETs:
-            t = threading.Thread(name=tet.name, target=opros_tet, args=(tet,))
+            t = threading.Thread(name=tet.name, target=tet.readDIs, args=(sleeptime,session_time))
             t.setDaemon(True)
             t.start()
-            t.join()
         time.sleep(cycletime)
-        print('end cycle' + '  '+ str(threading.active_count()))
+        
+        for tet in TETs:
+            if len(tet.currentDIs) > 0 :
+                tet.printTET(sensors)
+                tet.check(len(sensors))
+            
+        #print('end cycle' + '  '+ str(threading.active_count()))
 
 except KeyboardInterrupt:
     pass
