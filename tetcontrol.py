@@ -4,36 +4,28 @@ import os.path
 import time
 import threading
 from TET import TETP6
-import logging
-
-# создаём объект с именем модуля
-logger = logging.getLogger(__name__)
-# создаём обрабочтик файла лога
-handler = logging.FileHandler('logger1.log')
-# задаём уровень логгирования
-handler.setLevel(logging.INFO)
-# форматируем записи
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-# устанавливаем формат для обработчика
-handler.setFormatter(formatter)
-# добавляем обработчик к логгеру
-logger.addHandler(handler)
-
+from loggerTET import logger
 
 config_file = 'config.py'
 if os.path.isfile(config_file):
-    #print('Config file - OK')
-    logger.info('Config file was readed successfully')
+    logger.info('Config file - OK')
     from config import *
 else:
-    #print('Bad config')
-    logger.warning('Config file doesn"t exist. Default settings are used')
+    logger.warning('Config file doesn"t exist. Default settings were applied')
     sensors = []
     sleeptime = 0.1
     cycletime = 10
+    session_time = 5
 
 TETs = []
-with open('teti.csv') as f:
+
+if os.path.isfile('teti.csv'):
+    teti_file = 'teti.csv'
+else:
+    logger.warning('File teti.csv doesn"t exist')
+    teti_file = input('Enter file name: ')
+
+with open(teti_file) as f:
     for line in f:
         if not line.startswith('#'):
             words = line.split(';')
@@ -47,6 +39,7 @@ with open('teti.csv') as f:
                 TETs.append(tet)
 f.close()
 
+logger.info('Request cicle is starting')
 try:
     while True:
         for tet in TETs:
@@ -57,12 +50,11 @@ try:
         
         for tet in TETs:
             if len(tet.currentDIs) > 0 :
-                tet.printTET(sensors)
-                tet.check(len(sensors))
-            
-        #print('end cycle' + '  '+ str(threading.active_count()))
+                #tet.printTET(sensors)
+                tet.check(sensors)
 
 except KeyboardInterrupt:
+    logger.info('Request cicle is stopped')
     pass
 
 

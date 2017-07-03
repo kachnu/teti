@@ -1,8 +1,10 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import re
 import dryscrape
 from bs4 import BeautifulSoup
 import time
+from loggerTET import logger
 
 
 class TETP6:
@@ -20,11 +22,10 @@ class TETP6:
         session.set_timeout(session_time)
         url = 'http://' + self.ip + '/login.cgi?webpwd=Admin&Submit=Submit'
         try:
-            print("Try connect" + ' - '+ self.name)
             session.visit(url)
             time.sleep(sleeptime)
         except:
-            print('Error connect' + ' - ' + self.name)
+            logger.warning('Destination Host Unreachable ' + self.name + ' IP: ' + self.ip)
             return False
         response = session.body()
         soup = BeautifulSoup(response, 'lxml')
@@ -38,19 +39,13 @@ class TETP6:
         self.timestamp = time.ctime()
         return True
 
-    def check(self, num):
-        n = 0
+    def check(self, sensors):
+        num = len(sensors)
         if num == 0:
             num = self.numDI
         for i in range(num):
-            #print(str(self.normalDIs[i]) + ' ' + str(self.currentDIs[i]))
             if str(self.normalDIs[i]) != str(self.currentDIs[i]):
-                n = n + 1
-        #print(self.info + ' ' + self.timestamp)
-        if n == 0:
-            print('Status OK')
-        else:
-            print('Status ATTENTION!  ERROR ERROR ERROR  ATTENTION!')
+                logger.warning(self.name + ' IP: ' + self.ip + ' ' + str(sensors[i]) + ' - ERROR')
 
     def printTET(self, sensors):
         if len(sensors) > 0:
