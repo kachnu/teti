@@ -50,7 +50,6 @@ try:
         
         for tet in TETs:
             if len(tet.currentDIs) > 0 :
-                #tet.printTET(sensors)
                 tet.check(sensors)
 
 except KeyboardInterrupt:

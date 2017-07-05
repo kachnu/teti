@@ -16,7 +16,10 @@ class TETP6:
         self.normalDIs = nDIs
         self.currentDIs = []
         self.timestamp = 0
-
+        self.link = False
+        self.ERRORS = dict()
+        
+        
     def readDIs(self, sleeptime, session_time):
         session = dryscrape.Session()
         session.set_timeout(session_time)
@@ -24,8 +27,13 @@ class TETP6:
         try:
             session.visit(url)
             time.sleep(sleeptime)
+            self.link = True
+            self.timestamp = time.time()
         except:
-            logger.warning('Destination Host Unreachable ' + self.name + ' IP: ' + self.ip)
+            newError = 'Destination Host Unreachable ' + self.name + ' IP: ' + self.ip
+            if newError not in self.ERRORS:
+                logger.warning('Destination Host Unreachable ' + self.name + ' IP: ' + self.ip)
+                self.ERRORS['Destination Host Unreachable ' + self.name + ' IP: ' + self.ip] = time.time()
             return False
         response = session.body()
         soup = BeautifulSoup(response, 'lxml')
@@ -36,27 +44,21 @@ class TETP6:
                 self.currentDIs.append(1)
             else:
                 self.currentDIs.append(0)
-        self.timestamp = time.ctime()
         return True
 
     def check(self, sensors):
-        num = len(sensors)
-        if num == 0:
-            num = self.numDI
-        for i in range(num):
-            if str(self.normalDIs[i]) != str(self.currentDIs[i]):
-                logger.warning(self.name + ' IP: ' + self.ip + ' ' + str(sensors[i]) + ' - ERROR')
-
-    def printTET(self, sensors):
-        if len(sensors) > 0:
+        if self.link:
             num = len(sensors)
-            print(self.info + ' ' + self.timestamp)
+            if num == 0:
+                num = self.numDI
             for i in range(num):
-                print('DI' + str(i) + ' ' + str(sensors[i]) + ' ' + str(self.currentDIs[i]) + ' ' + str(self.normalDIs[i]))
-        else:
-            num = self.numDI-1
-            print(self.info + ' ' + self.timestamp)
-            for i in range(num):
-                print('DI' + str(i) + ' ' + str(self.currentDIs[i]) + ' ' + str(self.normalDIs[i]))
+                if str(self.normalDIs[i]) != str(self.currentDIs[i]):
+                    newError = self.name + ' IP: ' + self.ip + ' ' + str(sensors[i]) + ' - ERROR'
+                    
+                    if newError not in self.ERRORS:
+                        self.ERRORS[newError] = time.time()
+                        logger.warning(self.name + ' IP: ' + self.ip + ' ' + str(sensors[i]) + ' - ERROR')
+
+
 
 

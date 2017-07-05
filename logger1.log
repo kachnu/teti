@@ -1,13 +1,7 @@
 
-2017-07-03 15:08:40,091 - tetcontrol - INFO - Config file - OK
-2017-07-03 15:08:40,091 - tetcontrol - INFO - Request cicle is starting
-2017-07-03 15:08:50,156 - tetcontrol - INFO - Request cicle is stopped
-2017-07-03 15:11:58,079 - tetcontrol - INFO - Config file - OK
-2017-07-03 15:11:58,080 - tetcontrol - INFO - Request cicle is starting
-2017-07-03 15:12:05,862 - tetcontrol - INFO - Request cicle is stopped
-2017-07-03 15:12:16,701 - tetcontrol - INFO - Config file - OK
-2017-07-03 15:13:06,687 - tetcontrol - INFO - Config file - OK
-2017-07-03 15:13:15,169 - tetcontrol - INFO - Request cicle is starting
-2017-07-03 15:13:19,020 - tetcontrol - INFO - Request cicle is stopped
-2017-07-03 15:18:21,460 - tetcontrol - INFO - Config file - OK
-2017-07-03 15:18:21,460 - tetcontrol - INFO - Request cicle is starting
+2017-07-05 14:57:24,416 - tetcontrol - INFO - Config file - OK
+2017-07-05 14:57:24,416 - tetcontrol - INFO - Request cicle is starting
+2017-07-05 14:57:29,486 - tetcontrol - WARNING - vasil IP: 10.99.56.61 DOOR - ERROR
+2017-07-05 14:57:29,719 - tetcontrol - WARNING - Destination Host Unreachable mves IP: 10.99.55.62
+2017-07-05 14:57:29,732 - tetcontrol - WARNING - Destination Host Unreachable rezerv IP: 10.99.33.61
+2017-07-05 14:58:22,342 - tetcontrol - INFO - Request cicle is stopped
