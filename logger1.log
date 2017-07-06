@@ -1,7 +1,14 @@
 
-2017-07-05 14:57:24,416 - tetcontrol - INFO - Config file - OK
-2017-07-05 14:57:24,416 - tetcontrol - INFO - Request cicle is starting
-2017-07-05 14:57:29,486 - tetcontrol - WARNING - vasil IP: 10.99.56.61 DOOR - ERROR
-2017-07-05 14:57:29,719 - tetcontrol - WARNING - Destination Host Unreachable mves IP: 10.99.55.62
-2017-07-05 14:57:29,732 - tetcontrol - WARNING - Destination Host Unreachable rezerv IP: 10.99.33.61
-2017-07-05 14:58:22,342 - tetcontrol - INFO - Request cicle is stopped
+2017-07-06 15:39:02,192 - tetcontrol - INFO - Config file - OK
+2017-07-06 15:39:02,193 - tetcontrol - INFO - Request cicle is starting
+2017-07-06 15:39:22,217 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR
+2017-07-06 15:39:27,223 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR - OK
+2017-07-06 15:39:42,242 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR
+2017-07-06 15:40:07,274 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR - OK
+2017-07-06 15:54:58,121 - tetcontrol - INFO - Config file - OK
+2017-07-06 15:54:58,121 - tetcontrol - INFO - Request cicle is starting
+2017-07-06 15:56:38,313 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR
+2017-07-06 15:56:43,333 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR - OK
+2017-07-06 15:56:58,364 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR
+2017-07-06 15:57:28,416 - tetcontrol - WARNING - rezerv IP: 10.99.3.235 SMOK - ERROR - OK
+2017-07-06 16:01:38,446 - tetcontrol - INFO - Request cicle is stopped

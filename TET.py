@@ -32,13 +32,13 @@ class TETP6:
         except:
             newError = 'Destination Host Unreachable ' + self.name + ' IP: ' + self.ip
             if newError not in self.ERRORS:
-                logger.warning('Destination Host Unreachable ' + self.name + ' IP: ' + self.ip)
-                self.ERRORS['Destination Host Unreachable ' + self.name + ' IP: ' + self.ip] = time.time()
+                logger.warning(newError)
+                self.ERRORS[newError] = time.time()
             return False
         response = session.body()
         soup = BeautifulSoup(response, 'lxml')
         cDIs = soup.findAll(id = re.compile('DI\d+'))
-
+        self.currentDIs = []
         for DI in cDIs:
             if DI.text == 'ON':
                 self.currentDIs.append(1)
@@ -51,13 +51,20 @@ class TETP6:
             num = len(sensors)
             if num == 0:
                 num = self.numDI
+            count = num
             for i in range(num):
                 if str(self.normalDIs[i]) != str(self.currentDIs[i]):
                     newError = self.name + ' IP: ' + self.ip + ' ' + str(sensors[i]) + ' - ERROR'
+                    count = count - 1
                     
                     if newError not in self.ERRORS:
                         self.ERRORS[newError] = time.time()
-                        logger.warning(self.name + ' IP: ' + self.ip + ' ' + str(sensors[i]) + ' - ERROR')
+                        logger.warning(newError)
+        if count == num:
+            if len(self.ERRORS) > 0:
+                for e in self.ERRORS:
+                    logger.warning(e + ' - OK')
+                self.ERRORS = dict()
 
 
 
